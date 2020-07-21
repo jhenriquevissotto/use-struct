@@ -1,11 +1,19 @@
-// import { useReducer } from 'react'
-import { useState } from 'react'
-import { useMemo } from 'react'
-import fromEntries from 'fromentries'
-import { pipe as Pipe } from 'ramda'
-import omitDeep from 'deepdash/omitDeep'
-import { useLocalStorage } from 'react-use'
-import { merge } from 'lodash'
+// // import { useReducer } from 'react'
+// import { useState } from 'react'
+// import { useMemo } from 'react'
+// import fromEntries from 'fromentries'
+// import { pipe as Pipe } from 'ramda'
+// import omitDeep from 'deepdash/omitDeep'
+// import { useLocalStorage } from 'react-use'
+
+var { merge } = require('lodash')
+var { useState } = require('react')
+var { useMemo } = require('react')
+var fromEntries = require('fromentries')
+var { pipe: Pipe } = require('ramda')
+var omitDeep = require('deepdash/omitDeep')
+var { useLocalStorage } = require('react-use')
+var { merge } = require('lodash')
 
 
 const _useMemo = (a, b) => useMemo(() => a, b)
@@ -17,7 +25,7 @@ const colOfObjToObj = (arr, col) => arr.map(p => p[col]).reduce((obj, props) => 
 
 
 // ======== hook ======== //
-export default function useStruct({
+function useStruct({
     key = null,
     pst = false,
     ext: extensions = [],
@@ -93,6 +101,8 @@ export default function useStruct({
     })
 }
 
+
+module.exports = { useStruct }
 
 // options for pickDeep:
 // const opts = {

@@ -1,6 +1,9 @@
-import ScaffoldContext from '../context'
+// import ScaffoldContext from '../context'
 
-export default function ScaffoldProvider({ children, struct }) {
+var { ScaffoldContext } = require('../context')
+
+
+function ScaffoldProvider({ children, struct }) {
     
     const Struct = struct()
     
@@ -10,3 +13,5 @@ export default function ScaffoldProvider({ children, struct }) {
         </ScaffoldContext.Provider>
     )
 }
+
+module.exports = { ScaffoldProvider }

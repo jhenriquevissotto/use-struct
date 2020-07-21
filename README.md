@@ -22,12 +22,12 @@
 - No TypeScript yet (sorry).
 - useStruct is essentially a hook, so it will not work in Next's getInitialProps.
 - Debounce and throttle effects doesn't work in selectors and callbacks too.
-- In Redux, a action can dispatch many others actions and modify the state multiple times sequentially. But this is impossible in useStruct. By definition, a hook can modify the state only one time when called. Keep it in mind.
+- In Redux a action can dispatch many others actions and modify the state multiple times sequentially. But this is impossible in useStruct. By definition a hook can modify the state only one time when called. Keep it in mind.
 
 
 ### Overview:
 
-```
+```javascript
 // yarn add use-struct immer -D
 
 import useStruct from 'use-struct'
@@ -76,7 +76,7 @@ const Calculator = useStruct({
 
 ### In component: 
 
-```
+```javascript
 export default function Component() {
 
     // like a class
@@ -115,7 +115,7 @@ export default function Component() {
 
 ### 1) Fetching data from an API
 
-```
+```javascript
 // yarn add use-struct immer axios react-json-pretty -D
 
 import useStruct from 'use-struct'
@@ -188,7 +188,7 @@ Implements it in 3 steps:
 
 First, in the `./store` folder, create a function that return a instance of `useStruct()` hook.
 
-```
+```javascript
 import useStruct from 'use-struct'
 
 // the root struct
@@ -204,7 +204,7 @@ export default function Struct() {
 
 Second. Wrap your application with the `<ScaffoldProvider struct={struct} />` passing the function above for `struct` attribute: See:
 
-```
+```javascript
 import { ScaffoldProvider } from 'use-struct'
 
 // the root struct
@@ -222,7 +222,7 @@ export default function ContainerApp() {
 
 Third. Recovery the `useStruct()` instance in some component with the `useScaffold()`.
 
-```
+```javascript
 import { useScaffold } from 'use-struct'
 
 export default function SomeComponent() {
@@ -242,7 +242,7 @@ export default function SomeComponent() {
 
 Such that `useMemo `and `useCallback`, selectors `get` and callbacks `act` can be memorized too. Just add an array of dependencies after definitions.
 
-```
+```javascript
 const Calculator = useStruct({
     // ======== state ======== //
     val: {
@@ -263,13 +263,13 @@ const Calculator = useStruct({
     }, [get.calculatedCounter]], // all callbacks will be updated whenever that calculatedCounter selector changes.
 })
 ```
-If none dependencies array was added, all selectors and callbacks will react at each change of state.
+If none dependencies array was added all selectors and callbacks will react at each change of state.
 
 ### 3) Wrapping others structs
 
 A struct can wrap another and all properties and methods of the wrapred structs will are avaliable inside and outside for the wraper struct. See:
 
-```
+```javascript
 const AdditionModule = useStruct({
     // ======== state ======== //
     val: {
@@ -287,7 +287,7 @@ const AdditionModule = useStruct({
 ```
 
 
-```
+```javascript
 const SubtractionModule = useStruct({
     // ======== state ======== //
     val: {
@@ -310,7 +310,7 @@ You can access the wrapped structs by prefix `.str`.
 - `str.AdditionModule.blabla`
 - `str.SubtractionModule.blabla`
 
-```
+```javascript
 const Calculator = useStruct({
     // ======== children ======== //
     str: {
@@ -347,7 +347,7 @@ You can access the wrapped structs like as child property.
 - `Calculator.SubtractionModule.blabla`
 
 
-```
+```javascript
 export default function Component() {
 
     const SubtractionModule = useStruct({ ...inputs })
@@ -389,10 +389,10 @@ export default function Component() {
 
 ### 4) `str, val, get, set, act` are as a alias for `this`
 
-In a `Class`, others properties and methods can be accessed by prefix `this`. Similarly, in a struct, sibling properties and methods can be accessed by prefixes `str, val, get, set, act`.
+In a `Class` others properties and methods can be accessed by prefix `this`. Similarly in a struct sibling properties and methods can be accessed by prefixes `str, val, get, set, act`.
 
 See this full example: 
-```
+```javascript
 const Struct = useStruct({
     // ======== children ======== //
     str: {
@@ -428,7 +428,7 @@ const Struct = useStruct({
 
 The state of each `useStruct` can be easy persisted in `local storage` adding a `key: 'STRUCT_NAME'` and `pst: true` in the hook input. See:
 
-```
+```javascript
 // persisted struct
 const Struct = useStruct({
 
@@ -442,9 +442,9 @@ const Struct = useStruct({
 ```
 
 ### 6) Extending others structs
-Similarly to a `Class`, a struct can extend many others structs and all their properties and methods will are DIRECTLY available for the extended struct WITHOUT PREFIX `.str`.
+Similarly to a `Class` a struct can extend many others structs and all their properties and methods will are DIRECTLY available for the extended struct WITHOUT PREFIX `.str`.
 
-```
+```javascript
 import useStruct from 'use-struct'
 import produce from 'immer'
 
@@ -473,7 +473,7 @@ const SubtractionModule = useStruct({
 
 #### Accessing the extended features by inside
 
-```
+```javascript
 const Calculator = useStruct({ 
     ext: [
         AdditionModule,
@@ -493,7 +493,7 @@ const Calculator = useStruct({
 
 #### Accessing the extended features by outside
 
-```
+```javascript
 export default function Component() {
 
     // ================ structs ================ //
@@ -546,7 +546,7 @@ In both cases looks that these props and methods was created by `Calculator` str
 
 Example with Hello World:
 
-```
+```javascript
 export default function Component() {
 
     const Calculator = useStruct({ ...inputs })
