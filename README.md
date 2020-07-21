@@ -8,21 +8,21 @@
 <br />
 
 ------ Main features: -------
-1 - Simple and intuitive syntax (val, get, set, act).
-2 - Easy persistence.
-3 - Parent and children logic.
-4 - Extension and inheritance.
-5 - Context API.
-6 - Natural source code for JS and React (made with functions and Hooks).
-7 - Free of useEffects (side effects doesn't work in SSR).
+1. Simple and intuitive syntax (val, get, set, act).
+2. Easy persistence.
+3. Parent and children logic.
+4. Extension and inheritance.
+5. Context API.
+6. Natural source code for JS and React (made with functions and Hooks).
+7. Free of useEffects (side effects doesn't work in SSR).
 
 <br />
 
 ------ Disclaimer: -----
-–  No TypeScript yet (sorry).
-–  useStruct is essentially a hook, so it will not work in Next's getInitialProps.
-–  Debounce and throttle effects doesn't work in selectors and callbacks too.
-–  In Redux, a action can dispatch many others actions and modify the state multiple times sequentially. But this is impossible in useStruct. By definition, a hook can modify the state only one time when called. Keep it in mind.
+- No TypeScript yet (sorry).
+- useStruct is essentially a hook, so it will not work in Next's getInitialProps.
+- Debounce and throttle effects doesn't work in selectors and callbacks too.
+- In Redux, a action can dispatch many others actions and modify the state multiple times sequentially. But this is impossible in useStruct. By definition, a hook can modify the state only one time when called. Keep it in mind.
 
 
 ### Overview:
