@@ -1,7 +1,7 @@
-// import { createContext as createScaffoldContext } from 'react'
-// export default createScaffoldContext
+import { createContext as createScaffoldContext } from 'react'
+export default createScaffoldContext
 
 
-var  { createContext: createScaffoldContext } = require('react')
+// var createScaffoldContext = require('react').createContext
 
-module.exports = { createScaffoldContext }
+// module.exports = { createScaffoldContext }

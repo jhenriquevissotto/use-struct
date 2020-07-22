@@ -1,21 +1,25 @@
 // external libs
-// // import { useReducer } from 'react'
-// import { useState } from 'react'
-// import { useMemo } from 'react'
-// import fromEntries from 'fromentries'
-// import { pipe as Pipe } from 'ramda'
-// import omitDeep from 'deepdash/omitDeep'
-// import { useLocalStorage } from 'react-use'
+// import { useReducer } from 'react'
+import { useState } from 'react'
+import { useMemo } from 'react'
+import { useLocalStorage } from 'react-use'
+import { merge } from 'lodash'
+// var pickDeep from 'deepdash/pickDeep'
+// var omitDeep from 'deepdash/omitDeep'
+import { pipe as Pipe } from 'ramda'
+import fromEntries from 'fromentries'
 
-// external libs
-var { useState } = require('react')
-var { useMemo } = require('react')
-var { useLocalStorage } = require('react-use')
-var { merge } = require('lodash')
-// var pickDeep = require('deepdash/pickDeep')
-// var omitDeep = require('deepdash/omitDeep')
-var { pipe: Pipe } = require('ramda')
-var fromEntries = require('fromentries')
+
+// // external libs
+// var { useReducer } = require('react')
+// var { useState } = require('react')
+// var { useMemo } = require('react')
+// var { useLocalStorage } = require('react-use')
+// var { merge } = require('lodash')
+// // var pickDeep = require('deepdash/pickDeep')
+// // var omitDeep = require('deepdash/omitDeep')
+// var Pipe = require('ramda').pipe
+// var fromEntries = require('fromentries')
 
 
 // definitions
@@ -41,23 +45,31 @@ function useStruct({
     pst = false,
     ext: extensions = [],
     str: structs    = {},
+    use: hooks      = () => ({}),
     val: states     = {}, 
     set: setters    = () => ({}), 
     get: getters    = () => [{}], 
     act: actions    = () => [{}],
+    efc: effects    = () => null,
 }) {
     
     // ======== functions ======== //
-    const withExtendedStr = structs => merge(colOfObjToObj(extensions,  'str'),  structs)
-    const withExtendedVal = states  => merge([colOfObjToObj(extensions, 'val')], states)
-    const withExtendedGet = getters => merge([colOfObjToObj(extensions, 'get')], getters)
-    const withExtendedSet = setters => merge(colOfObjToObj(extensions,  'set'),  setters)
-    const withExtendedAct = actions => merge([colOfObjToObj(extensions, 'act')], actions)
+    const withExtendedStr = structs => merge(colOfObjToObj(extensions,  'str'),     structs)
+    const withExtendedUse = hooks   => merge(colOfObjToObj(extensions, 'use'),      hooks)
+    const withExtendedVal = states  => merge([colOfObjToObj(extensions, 'val')],    states)
+    const withExtendedGet = getters => merge([colOfObjToObj(extensions, 'get')],    getters)
+    const withExtendedSet = setters => merge(colOfObjToObj(extensions,  'set'),     setters)
+    const withExtendedAct = actions => merge([colOfObjToObj(extensions, 'act')],    actions)
 
 
-
+    
     // ======== children ======== //
     const str = withExtendedStr(structs)
+    
+
+
+    // ======== hooks ======== //
+    const use = withExtendedUse(hooks())
 
 
     
@@ -74,8 +86,8 @@ function useStruct({
     // ======== selectors ======== //
     const get = _useMemo(...(() => {
         // const str   = omitDeep(withExtendedStr(structs), ['set', 'act', 'key', 'pst', 'ext'], opts)
-        const [get] = withExtendedGet(getters({ str, val }))
-        return        withExtendedGet(getters({ str, val, get }))
+        const [get] = withExtendedGet(getters({ str, use, val }))
+        return        withExtendedGet(getters({ str, use, val, get }))
     })())
     
     
@@ -88,32 +100,39 @@ function useStruct({
             col => fromEntries(col), 
         )
         // const str = omitDeep(withExtendedStr(structs), ['act', 'key', 'pst', 'ext'], opts)
-        const set = pipe(withExtendedSet(setters({ str, val, get })))
-        return      pipe(withExtendedSet(setters({ str, val, get, set })))
+        const set = pipe(withExtendedSet(setters({ str, use, val, get })))
+        return      pipe(withExtendedSet(setters({ str, use, val, get, set })))
     })()
         
 
     // ======== callbacks ======== //
     const act = _useMemo(...(() => {
         // const str   = omitDeep(withExtendedStr(structs), ['key', 'pst', 'ext'], opts)
-        const [act] = withExtendedAct(actions({ str, val, get, set }))
-        return        withExtendedAct(actions({ str, val, get, set, act }))
+        const [act] = withExtendedAct(actions({ str, use, val, get, set }))
+        return        withExtendedAct(actions({ str, use, val, get, set, act }))
     })())
+    
+
+
+    // ======== effects ======== //
+    effects({ str, use, val, get, set, act })
+
     
 
 
     // ======== interface ======== //
     return ({ 
         // props and methods
-        str, val, set, get, act,
+        str, use, val, set, get, act,
 
         // shortcuts
-        ...str, ...val, ...act,
+        ...str, ...use, ...val, ...act,
     })
 }
 
 
-module.exports = { useStruct }
+export default useStruct
+// module.exports = { useStruct }
 
 
 

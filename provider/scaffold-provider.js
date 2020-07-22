@@ -1,6 +1,6 @@
-// import ScaffoldContext from '../context'
+import ScaffoldContext from '../context'
 
-var { ScaffoldContext } = require('../context')
+// var { ScaffoldContext } = require('../context')
 
 
 function ScaffoldProvider({ children, struct }) {
@@ -14,4 +14,6 @@ function ScaffoldProvider({ children, struct }) {
     )
 }
 
-module.exports = { ScaffoldProvider }
+export default ScaffoldProvider
+
+// module.exports = { ScaffoldProvider }
