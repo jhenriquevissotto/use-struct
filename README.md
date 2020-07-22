@@ -1,6 +1,6 @@
 
 #  Manage local and global states with one hook.
-## Group States, Reducers, Selectors and Callbacks in a Struct (likes a Class) and keep your code organized.
+## Group States, Reducers, Selectors and Callbacks in a Struct (like a Class) and keep your code organized.
 ### Works globaly too (like Redux).
 
 [Follow me on instagram! =)](https://www.instagram.com/jhenrique.vissotto)
@@ -168,7 +168,64 @@ export default function Component() {
     )
 }
 ```
-### 2) Consult more examples in `./models` and `./pages`  folders  in the source code.
+
+### 2) ** New recent features: `use` for hooks and `efc` for effects. **
+
+Such that constructor of a Class, the useStruct can invoke initial hooks too and provide them by prefix `.use`.
+And even more, finally you can put side effects (such that useEffect) for react to changes of state.
+
+Example:
+
+```javascript
+export default function Componen() {
+
+    // ================ structs ================ //
+    const Calculator = useStruct({
+        // ======== hooks ======== //
+        // instance hooks here and call them by prefix .use 
+        use() {
+            const [counter, setCounter] = useState(100)
+    
+            return ({ counter, setCounter })
+        },
+        
+        // ======== selectors ======== //
+        get: ({ use }) => [{
+            multipliedCounter: multiplier => use.counter * multiplier
+        }],
+        
+        // ======== callbacks ======== //
+        act: ({ use }) => [{
+            increment() {
+                use.setCounter(x => x + 1)
+            }
+        }],
+
+        // ======== effects ======== //
+        // put the side effects here
+        efc({ use }) {
+            // print a log whenever the useState's counter is changed
+            useEffect(() => {
+                console.log('Counter changed. New value is:', use.counter)
+            }, [use.counter])
+        }
+    })
+
+    // ================ render ================ //
+    return (
+        <div>
+            {/* ======== HOOKS ======== */}
+            <h1>Counter: {Calculator.counter}</h1>
+
+            {/* ======== CALLBACKS ======== */}
+            <button onClick={() => Calculator.increment()} >increment</button>
+        </div>
+    )
+}
+```
+
+
+### 3) Consult more examples in `./models` and `./pages`  folders  in the source code.
 Clone the repository and test it immediately with `yarn dev` in `http://localhost:3000`.
 
 

@@ -14,6 +14,14 @@ export default () => {
         },
     })
     
+    const Extensor = useStruct({
+        ext: [Test],
+        get: ({ use }) => [{
+            multipliedCounter: () => use.counter * 10, 
+        }]
+    })
+
+
     
     const Wrapper = useStruct({
         str: { Test },
@@ -31,6 +39,12 @@ export default () => {
 
     return (
         <div>
+            <h1>Counter: {Extensor.use.counter}</h1>
+            <h2>multiplied Counter: {Extensor.get.multipliedCounter()}</h2>
+            <button onClick={() => Extensor.use.setCounter(x => x + 1)} >Increment</button>
+
+            <hr />
+
             <h1>Counter: {Test.counter}</h1>
             <button onClick={() => Wrapper.increment()} >Increment</button>
         </div>

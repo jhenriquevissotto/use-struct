@@ -123,7 +123,7 @@ function useStruct({
     // ======== interface ======== //
     return ({ 
         // props and methods
-        str, use, val, set, get, act,
+        str, use, val, get, set, act,
 
         // shortcuts
         ...str, ...use, ...val, ...act,
