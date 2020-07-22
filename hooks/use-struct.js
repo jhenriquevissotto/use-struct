@@ -1,3 +1,4 @@
+// external libs
 // // import { useReducer } from 'react'
 // import { useState } from 'react'
 // import { useMemo } from 'react'
@@ -6,18 +7,28 @@
 // import omitDeep from 'deepdash/omitDeep'
 // import { useLocalStorage } from 'react-use'
 
-var { merge } = require('lodash')
+// external libs
 var { useState } = require('react')
 var { useMemo } = require('react')
-var fromEntries = require('fromentries')
-var { pipe: Pipe } = require('ramda')
-var omitDeep = require('deepdash/omitDeep')
 var { useLocalStorage } = require('react-use')
 var { merge } = require('lodash')
+// var pickDeep = require('deepdash/pickDeep')
+// var omitDeep = require('deepdash/omitDeep')
+var { pipe: Pipe } = require('ramda')
+var fromEntries = require('fromentries')
 
 
+// definitions
+// const opts = {
+//     onNotMatch: {
+//         cloneDeep: true,
+//         skipChildren: true,
+//     },
+// }
+
+
+// functions
 const _useMemo = (a, b) => useMemo(() => a, b)
-
 
 const colOfObjToObj = (arr, col) => arr.map(p => p[col]).reduce((obj, props) => Object.assign(obj, props), {})
 // const colOfArrToArr = (arr, col) => arr.map(p => p[col]).reduce((arr, items) => [...arr, ...items], [])
@@ -62,7 +73,7 @@ function useStruct({
     
     // ======== selectors ======== //
     const get = _useMemo(...(() => {
-        const str   = omitDeep(withExtendedStr(structs), ['set', 'act', 'key', 'pst', 'ext'])
+        // const str   = omitDeep(withExtendedStr(structs), ['set', 'act', 'key', 'pst', 'ext'], opts)
         const [get] = withExtendedGet(getters({ str, val }))
         return        withExtendedGet(getters({ str, val, get }))
     })())
@@ -76,7 +87,7 @@ function useStruct({
             col => col.map(([key, foo]) => [key, pld => mod(stt => foo(pld) || stt)]), // for useReducer, use this: pld => dsp(foo(pld)) 
             col => fromEntries(col), 
         )
-        const str = omitDeep(withExtendedStr(structs), ['act', 'key', 'pst', 'ext'])
+        // const str = omitDeep(withExtendedStr(structs), ['act', 'key', 'pst', 'ext'], opts)
         const set = pipe(withExtendedSet(setters({ str, val, get })))
         return      pipe(withExtendedSet(setters({ str, val, get, set })))
     })()
@@ -84,7 +95,7 @@ function useStruct({
 
     // ======== callbacks ======== //
     const act = _useMemo(...(() => {
-        const str   = omitDeep(withExtendedStr(structs), ['key', 'pst', 'ext'])
+        // const str   = omitDeep(withExtendedStr(structs), ['key', 'pst', 'ext'], opts)
         const [act] = withExtendedAct(actions({ str, val, get, set }))
         return        withExtendedAct(actions({ str, val, get, set, act }))
     })())
@@ -104,13 +115,6 @@ function useStruct({
 
 module.exports = { useStruct }
 
-// options for pickDeep:
-// const opts = {
-//     onMatch: {
-//         cloneDeep: true,
-//         skipChildren: true,
-//     },
-// }
 
 
 

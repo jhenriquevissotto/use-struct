@@ -1,6 +1,6 @@
 {
   "name": "use-struct",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Manage local and global states with one hook.",
   "main": "index.js",
   "scripts": {
